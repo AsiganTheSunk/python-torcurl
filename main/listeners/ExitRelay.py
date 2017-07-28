@@ -1,4 +1,5 @@
 import os
+import sys
 
 class ExitRelay():
     def __init__(self, exit_relay='', exit_address='', exit_fingerprint='', exit_nickname='', exit_locale=''):
@@ -18,16 +19,20 @@ class ExitRelay():
 
     def save(self):
         try:
-            f = open((os.getcwd() + str('/cache/exit_relay.info')), "wb")
+            test = '/home/asigan/python-torcurl/main/cache/exit_relay.info'
+            # source = os.getcwd()
+            #f = open((source + str('/main/cache/exit_relay.info')), "wb")
+            f = open(test, 'wb')
             f.write('Exit relay for our connection to %s' % (self.exit_relay))
             f.write('\n address: %s' % (self.exit_address))
             f.write('\n fingerprint: %s' % (self.exit_fingerprint) )
             f.write('\n nickname: %s' % (self.exit_nickname))
             f.write('\n locale: %s' % (self.exit_locale))
-            f.close()
+            print('TorPyCurl Status: Information Succcessfully Retrieved')
         except:
-            print ('Something went wrong while trying to save the ExitRelay information...')
-
+            print('Something went wrong while trying to save the ExitRelay information...')
         finally:
-            return
+
+            f.close()
+
 

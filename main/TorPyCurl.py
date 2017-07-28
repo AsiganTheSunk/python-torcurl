@@ -7,10 +7,10 @@ import cStringIO
 from stem.control import Controller, Signal
 from bs4 import BeautifulSoup
 from urllib import urlencode
-import listeners.exit_relay_listener
-import subprocess
 from fake_useragent import UserAgent
-
+from main.listeners import ExitRelayListener as erl
+import subprocess
+from time import sleep
 
 class TorPyCurl():
     def __init__(self, proxy_port=9050, ctrl_port=9051, password=None):
@@ -24,13 +24,14 @@ class TorPyCurl():
         # Setup TempFile:
         self.tmpfile = str(os.getcwd() + '/file.tmp')
 
-    def post(self, data={'field': 'value'}, url=None, ssl=True, timeout=15):
+    def post(self, data, url=None, ssl=True, timeout=15):
         curl = pycurl.Curl()
 
         # Setup common Curl options
         curl.setopt(pycurl.URL, url)
         curl.setopt(pycurl.TIMEOUT, timeout)
         curl.setopt(pycurl.SSL_VERIFYPEER, ssl)
+        curl.setopt(pycurl.USERAGENT, str(UserAgent().random))
 
         # Setup Tor related Curl options
         curl.setopt(pycurl.PROXY, '127.0.0.1')
@@ -68,6 +69,7 @@ class TorPyCurl():
         curl.setopt(pycurl.URL, url)
         curl.setopt(pycurl.TIMEOUT, timeout)
         curl.setopt(pycurl.SSL_VERIFYPEER, ssl)
+        curl.setopt(pycurl.USERAGENT, str(UserAgent().random))
 
         # Setup Tor related Curl options
         curl.setopt(pycurl.PROXY, '127.0.0.1')
@@ -98,7 +100,6 @@ class TorPyCurl():
     def validate(self, url='https://check.torproject.org/', ssl=True, timeout=15):
         # Creating Curl instance
         curl = pycurl.Curl()
-
         # Setup StringIO buffer
         buf = cStringIO.StringIO()
         curl.setopt(pycurl.WRITEFUNCTION, buf.write)
@@ -107,6 +108,7 @@ class TorPyCurl():
         curl.setopt(pycurl.URL, url)
         curl.setopt(pycurl.TIMEOUT, timeout)
         curl.setopt(pycurl.SSL_VERIFYPEER, ssl)
+        curl.setopt(pycurl.USERAGENT, str(UserAgent().random))
 
         # Setup Tor related Curl options
         curl.setopt(pycurl.PROXY, '127.0.0.1')
@@ -123,9 +125,9 @@ class TorPyCurl():
             print 'TorPyCurl Connection address: ' + str(current_address.strong.text)
 
             if 'Congratulations.' in str(status[0].text).strip():
-                print 'TorPyCurl Connection status: OK'
+                print 'TorPyCurl Status: Connection PASS'
             else:
-                print 'TorPyCurl Connection status: FAIL'
+                print 'TorPyCurl Status: Connection FAIL'
 
         except pycurl.error, error:
             errno, errstr = error
@@ -135,10 +137,11 @@ class TorPyCurl():
             buf.close()
             curl.close()
 
+
     def reset(self):
         try:
             self.ctrl.authenticate(password="ultramegachachi")
-            print('TorPyCurl Connection status: RESET EXIT RELAY')
+            print('TorPyCurl Status: Connection Reset ExitRelay')
             self.ctrl.signal(Signal.NEWNYM)
 
         except pycurl.error, error:
@@ -152,19 +155,12 @@ class TorPyCurl():
     # Retrieve information about the Exit Node TODO
     def status(self):
         try:
-            #t = threading.Thread(target=listeners.stream_listener.main())
-            #t.start()
-
-            listeners.exit_relay_listener.main()
-            #subprocess.call('curl --socks5 127.0.0.1:9050 https://check.torproject.org', shell=True)
+            erl.ExitRelayListener()
         except pycurl.error, error:
             errno, errstr = error
             print 'An error occurred: ', errstr
 
 
-    # TODO
-    # Permitir multiples hilos de Tor, en un futuro
-    # Mirar que funcionalidades se le pueden implementar
-    # No hacer overkill, de momento lo que tienes te llega!!
-    # Grab stdout line by line as it becomes available.  This will loop until
-    # p terminates.
+    # TODO add fake_useragent, test post function
+    # TODO Grab stdout line by line as it becomes available.  This will loop until
+    # TODO p terminates.
