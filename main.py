@@ -12,6 +12,7 @@ def main():
     session.validate()
     session.reset()
     session.validate()
+    #session.get()
 
     #session2 = tpc.TorPyCurl()
     #session2.validate()
