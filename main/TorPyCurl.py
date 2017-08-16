@@ -11,23 +11,10 @@ from fake_useragent import UserAgent
 from main.listeners import ExitRelayListener as erl
 import subprocess
 from time import sleep
-
-
-class Response(str):
-    def __new__(cls, code, type, data):
-        return str.__new__(cls, data)
-
-    def __init__(self, code, type, data):
-        self.code = code
-        self.type = type
-        self.data = data
-        str.__init__(self)
-
-class ProxyChain():
-    def __init__(self):
-        return
-
-# TODO PROBAR A QUE RECIBAN EL HANDLER; PARA VER SI SOLVENTA EL PROBLEMA DE TENER QUE REINSTANCIARLO.
+import requests.exceptions
+from main.Response import Response
+from main.ProxyChain import ProxyChain
+from main.exceptions import *
 
 class TorPyCurl():
     def __init__(self, ctrl_port=9051):
@@ -203,7 +190,6 @@ class TorPyCurl():
         except pycurl.error, error:
             errno, errstr = error
             print 'An error occurred: ', errstr
-
 
 
 
