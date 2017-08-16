@@ -17,10 +17,16 @@ from main.ProxyChain import ProxyChain
 from main.exceptions import *
 
 class TorPyCurl():
+    """Class
+
+    Attributes:
+        ctrl_port   -- number of port, used to connect to tor and use the stem library
+    """
     def __init__(self, ctrl_port=9051):
         self.handler = pycurl.Curl()
 
-        # TODO, read from file.conf
+        # TODO read configuration from *.conf
+        # TODO cypher the password... plx not in clarinete
         self.ctrl = Controller.from_port(port=ctrl_port)
         self.ctrl.authenticate(password='ultramegachachi')
 
@@ -28,17 +34,39 @@ class TorPyCurl():
         self.tmpfile = str(os.getcwd() + '/file.tmp')
 
     def reset_handler(self):
+        """Function
+
+        Attributes:
+        """
         self.handler.close()
         self.handler = pycurl.Curl()
 
 
     def _proxy_setup(self, proxy='127.0.0.1', proxy_port=9050):
+        """Function
+
+        Attributes:
+            proxy       -- proxy ip, by default loopback interface
+            proxy_port  -- number of proxy port
+        """
+
         # Setup tor curl options
         self.handler.setopt(pycurl.PROXY, proxy)
         self.handler.setopt(pycurl.PROXYPORT, proxy_port)
         self.handler.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_SOCKS5_HOSTNAME)
 
     def _curl_setup(self,url, headers={}, attrs={}, ssl=True, timeout=15, user_agent=str(UserAgent().random)):
+        """Function
+
+        Attributes:
+            url     --
+            headers --
+            attrs   --
+            ssl     --
+            timeout --
+            user_agent  --
+        """
+
         if attrs:
             url = "%s?%s" % (url, urlencode(attrs))
 
@@ -52,6 +80,11 @@ class TorPyCurl():
         self.handler.setopt(pycurl.USERAGENT, user_agent)
 
     def _curl_perform(self):
+        """Function
+
+        Attributes:
+        """
+
         response_buffer = StringIO()
 
         self.handler.setopt(pycurl.WRITEFUNCTION, response_buffer.write)
@@ -66,6 +99,15 @@ class TorPyCurl():
 
 
     def get(self, url='https://check.torproject.org/', headers={}, attrs={}, ssl=True, timeout=15):
+        """Function
+
+        Attributes:
+            url     --
+            headers --
+            attrs   --
+            ssl     --
+            timeout --
+        """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
         self.reset_handler()
@@ -85,6 +127,15 @@ class TorPyCurl():
             print 'An error occurred: ', errstr
 
     def post(self, url=None, headers={}, attrs={},  ssl=True, timeout=15):
+        """Function
+
+        Attributes:
+            url     --
+            headers --
+            attrs   --
+            ssl     --
+            timeout --
+        """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
         self.reset_handler()
@@ -106,6 +157,15 @@ class TorPyCurl():
             print 'An error occurred: ', errstr
 
     def put(self, url, headers={}, attrs={}, ssl=True, timeout=15):
+        """Function
+
+        Attributes:
+            url     --
+            headers --
+            attrs   --
+            ssl     --
+            timeout --
+        """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
         self.reset_handler()
@@ -129,7 +189,16 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error ocurred: ', errstr
 
-    def delete(self, url, attrs={}, headers={}, ssl=True, timeout=15):
+    def delete(self, url, headers={}, attrs={}, ssl=True, timeout=15):
+        """Function
+
+        Attributes:
+            url     --
+            headers --
+            attrs   --
+            ssl     --
+            timeout --
+        """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
         self.reset_handler()
@@ -150,6 +219,13 @@ class TorPyCurl():
 
 
     def validate(self, url='https://check.torproject.org/', ssl=True, timeout=15):
+        """Function
+
+        Attributes:
+            url     --
+            ssl     --
+            timeout --
+        """
 
         try:
             response = self.get(url=url, ssl=ssl, timeout=timeout)
@@ -170,6 +246,10 @@ class TorPyCurl():
             print 'An error occurred: ', errstr
 
     def reset(self):
+        """Function
+
+        Attributes:
+        """
         try:
             print('TorPyCurl Status: Connection Reset ExitRelay')
             self.ctrl.signal(Signal.NEWNYM)

@@ -2,7 +2,11 @@
 # Base Exceptions
 
 class Error(Exception):
-    """Base class for other exceptions"""
+    """Base class for other exceptions
+
+    Attributes:
+        msg  -- explanation of the error
+    """
     def __init__(self, arg=None):
         if arg is None:
             arg = 'An error ocurred with coco'
@@ -13,6 +17,11 @@ class Error(Exception):
 
 # Custom Exceptions
 
-class UrlValueException(Error):
+class UrlValueError(Error):
+    """Exception raised for errors in the input.
+
+    Attributes:
+        msg  -- explanation of the error
+    """
     def __init__(self):
-        super(UrlValueException, self).__init__(arg="URL ERROR")
+        super(UrlValueError, self).__init__(arg="URL ERROR")
