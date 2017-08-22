@@ -13,8 +13,10 @@ import subprocess
 from time import sleep
 import requests.exceptions
 from main.Response import Response
-from main.ProxyChain import ProxyChain
+from main.ProxyRotator import ProxyRotator
 from main.exceptions import *
+
+LOCAL_HOST = '127.0.0.1'
 
 class TorPyCurl():
     """Class
@@ -42,7 +44,7 @@ class TorPyCurl():
         self.handler = pycurl.Curl()
 
 
-    def _proxy_setup(self, proxy='127.0.0.1', proxy_port=9050):
+    def _proxy_setup(self, proxy=LOCAL_HOST, proxy_port=9050):
         """Function
 
         Attributes:
@@ -240,6 +242,46 @@ class TorPyCurl():
                 print 'TorPyCurl Status: Connection PASS'
             else:
                 print 'TorPyCurl Status: Connection FAIL'
+
+        except pycurl.error, error:
+            errno, errstr = error
+            print 'An error occurred: ', errstr
+
+
+
+    def dns_leak_test(self, url='https://www.perfect-privacy.com/check-ip/', ssl=True, timeout=15):
+        #POST y 2 coockies hacen falta al menos. usar tamper data
+
+        """Function
+
+        Attributes:
+            url     --
+            ssl     --
+            timeout --
+        """
+
+        try:
+            response = self.get(url=url, ssl=ssl, timeout=timeout)
+            soup = BeautifulSoup(response.data, 'html.parser')
+            '''
+            token = (soup.findAll('a', {'id': 'startbtn'}))[0]['href']
+
+            print str(url+token)
+            response = self.post(url=url+token,ssl=ssl, timeout=timeout)
+            sleep(5)
+            response = self.get(url=url + token, ssl=ssl, timeout=timeout)
+            '''
+            soup = BeautifulSoup(response.data, 'html.parser')
+            print soup
+            info = soup.findAll('table')
+            print info
+
+            #print 'TorPyCurl Connection address: ' + str(current_address.strong.text)
+
+            #if 'Congratulations.' in str(status[0].text).strip():
+            #    print 'TorPyCurl Status: Connection PASS'
+            #else:
+            #    print 'TorPyCurl Status: Connection FAIL'
 
         except pycurl.error, error:
             errno, errstr = error
