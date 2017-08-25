@@ -14,22 +14,19 @@ def main():
         proxyRotator.add_tor_instance(None, 9070, 9071, None, None)
 
         print 'SEQUENTIAL TEST'
-        #proxyRotator.set_proxy_connection_mode(mode='sequential')
+        proxyRotator.set_proxy_connection_mode(mode='sequential')
         session = tpc.TorPyCurl(proxy_rotator=proxyRotator)
         session.validate()
-        sleep(2)
         session.validate()
-        sleep(2)
         session.validate()
-        sleep(2)
         session.validate()
-        #print
-        #print 'RANDOM TEST'
-        #proxyRotator.set_proxy_connection_mode(mode='random')
-        #session2 = tpc.TorPyCurl(proxy_rotator=proxyRotator)
-        #session2.validate()
-        #session2.validate()
-        #session2.validate()
+        print
+        print 'RANDOM TEST'
+        proxyRotator.set_proxy_connection_mode(mode='random')
+        session2 = tpc.TorPyCurl(proxy_rotator=proxyRotator)
+        session2.validate()
+        session2.validate()
+        session2.validate()
 
     except Error, arg:
         print 'Error: ', arg.msg

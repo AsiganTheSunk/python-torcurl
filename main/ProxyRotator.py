@@ -65,29 +65,26 @@ class ProxyRotator():
 
             Attributes:
         """
-        instance_id = self.tor_instance_counter = self.tor_instance_counter + 1
-        return instance_id
+        self.tor_instance_counter += 1
+        return self.tor_instance_counter
 
 
-    def get_tor_instance(self, mode=None):
+    def get_tor_instance(self):
         """Function
 
             Attributes:
         """
 
         try:
-            if mode is 'sequential':
-                self.proxy_connection_mode = mode
+            if self.proxy_connection_mode == 'sequential':
                 tor_instance = self._sequential_tor_mode()
                 self.eval_tor_instance(tor_instance)
                 return tor_instance
 
-            # if mode is random or empty, do random
-            #if mode is 'random' or None:
-            self.proxy_connection_mode = mode
-            tor_instance = self._random_tor_mode()
-            self.eval_tor_instance(tor_instance)
-            return tor_instance
+            if self.proxy_connection_mode == 'random':
+                tor_instance = self._random_tor_mode()
+                self.eval_tor_instance(tor_instance)
+                return tor_instance
 
         except:
             return
@@ -98,11 +95,15 @@ class ProxyRotator():
     def _random_tor_mode(self):
         return random.choice(self.tor_instance_list)
 
+    def add_last_connected_count(self):
+        self.tor_last_connected += 1
+
     def _sequential_tor_mode(self):
         if self.tor_last_connected == self.tor_instance_counter:
             self.tor_last_connected = -1
-        self.tor_last_connected = + 1
-        result = self.tor_instance_list[self.tor_last_connected % self.tor_instance_counter]
+
+        self.add_last_connected_count()
+        result = self.tor_instance_list[self.tor_last_connected % (self.tor_instance_counter+1)]
         return result
 
     def eval_tor_instance(self, tor_instance):
