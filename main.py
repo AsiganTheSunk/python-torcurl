@@ -37,10 +37,14 @@ def main():
 
         proxyRotator.eval_tor_instance()
         #raise Error('This is an error')
+<<<<<<< Updated upstream
         #raise UrlValueException()
         
         print proxyRotator
         '''
+=======
+        raise UrlValueError()
+>>>>>>> Stashed changes
     except Error, arg:
         print 'Error: ', arg.msg
 

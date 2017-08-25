@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
-import threading
 import os
 import pycurl
 from cStringIO import StringIO
-from stem.control import Controller, Signal
-from bs4 import BeautifulSoup
 from urllib import urlencode
+
+from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from main.listeners import ExitRelayListener as erl
-import subprocess
-from time import sleep
-import requests.exceptions
+from stem.control import Controller, Signal
+
 from main.Response import Response
+<<<<<<< Updated upstream
 from main.ProxyRotator import ProxyRotator
 from main.exceptions import *
+=======
+from main.listeners import ExitRelayListener as erl
+
+>>>>>>> Stashed changes
 
 LOCAL_HOST = '127.0.0.1'
 

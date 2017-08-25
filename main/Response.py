@@ -9,3 +9,5 @@ class Response(str):
         self.type = type
         self.data = data
         str.__init__(self)
+
+
