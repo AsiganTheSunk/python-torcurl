@@ -99,7 +99,9 @@ class ProxyRotator():
         return random.choice(self.tor_instance_list)
 
     def _sequential_tor_mode(self):
-        self.tor_last_connected = self.tor_last_connected + 1
+        if self.tor_last_connected == self.tor_instance_counter:
+            self.tor_last_connected = -1
+        self.tor_last_connected = + 1
         result = self.tor_instance_list[self.tor_last_connected % self.tor_instance_counter]
         return result
 
