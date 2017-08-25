@@ -20,13 +20,20 @@ def main():
         session.validate()
         session.validate()
         session.validate()
+        session.validate()
+        session.validate()
+        session.validate()
+        session.validate()
+        session.validate()
+
+
         print
         print 'RANDOM TEST'
         proxyRotator.set_proxy_connection_mode(mode='random')
         session2 = tpc.TorPyCurl(proxy_rotator=proxyRotator)
-        session2.validate()
-        session2.validate()
-        session2.validate()
+        #session2.validate()
+        #session2.validate()
+        #session2.validate()
 
     except Error, arg:
         print 'Error: ', arg.msg

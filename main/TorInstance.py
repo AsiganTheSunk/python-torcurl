@@ -36,7 +36,7 @@ class TorInstance():
         self.country_list = 'ALL'
         self.circuit_dirtyness = time.time()
         self.ctrl = Controller.from_port(port=cntrl_port)
-        self.ctrl.authenticate(password='ultramegachachi')
+        self.ctrl.authenticate(password='dummypass')
 
         if circuit_hops is None:
             self.circuit_hops = DEFAULT_CIRCUIT_HOPS
@@ -59,27 +59,21 @@ class TorInstance():
                    self.country_list
         ))
 
-
-
     def add_connection_use_count(self):
         """Function
 
             Attributes:
             """
-
         self.connection_count = self.connection_count + 1
         return
-
 
     def build_circuit(self):
         """Function
 
             Attributes:
             """
-
         #add the needed hops
         return
-
 
     def reset(self):
         """Function
@@ -89,12 +83,8 @@ class TorInstance():
         try:
             print('TorPyCurl Status: Connection Reset ExitRelay')
             self.ctrl.signal(Signal.NEWNYM)
-
         except:
             print 'An error occurred: '
-
-
-
 
     def colored_dirtyness(self, timer):
 

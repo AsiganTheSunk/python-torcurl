@@ -9,7 +9,7 @@ DEFAULT_ID = 0
 DEFAULT_PROXY_PORT = 9050
 DEFAULT_CNTRL_PORT = 9051
 DEFAULT_INSTANCE_NICK_NAMES = ['Moctezuma','Catherine','Ghandi', 'Ragnar', 'Tokugawa', 'Sitting Bull', 'Joao II']
-DEFAULT_CONNECTION_LIMIT = 2
+DEFAULT_CONNECTION_USE_LIMIT = 30
 
 
 class ProxyRotator():
@@ -22,7 +22,7 @@ class ProxyRotator():
         self.tor_instance_list = []
         self.tor_last_connected = -1
         self.proxy_connection_mode = 'random'
-        self.tor_connection_limit = DEFAULT_CONNECTION_LIMIT
+        self.tor_connection_limit = DEFAULT_CONNECTION_USE_LIMIT
         self.tor_instance_list.append(TorInstance(DEFAULT_ID, DEFAULT_INSTANCE_NICK_NAMES[0] ,
                                                   DEFAULT_PROXY_PORT, DEFAULT_CNTRL_PORT, None, None))
 
@@ -74,7 +74,6 @@ class ProxyRotator():
 
             Attributes:
         """
-
         try:
             if self.proxy_connection_mode == 'sequential':
                 tor_instance = self._sequential_tor_mode()
@@ -99,11 +98,8 @@ class ProxyRotator():
         self.tor_last_connected += 1
 
     def _sequential_tor_mode(self):
-        if self.tor_last_connected == self.tor_instance_counter:
-            self.tor_last_connected = -1
-
         self.add_last_connected_count()
-        result = self.tor_instance_list[self.tor_last_connected % (self.tor_instance_counter+1)]
+        result = self.tor_instance_list[self.tor_last_connected % (self.tor_instance_counter + 1)]
         return result
 
     def eval_tor_instance(self, tor_instance):
@@ -111,7 +107,7 @@ class ProxyRotator():
 
             Attributes:
             """
-        if tor_instance.connection_count == DEFAULT_CONNECTION_LIMIT:
+        if tor_instance.connection_count == DEFAULT_CONNECTION_USE_LIMIT:
             print '[ %s ]: %s - %s TOR Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port)
             tor_instance.reset()
         return
