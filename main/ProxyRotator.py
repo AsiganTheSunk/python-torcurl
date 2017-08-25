@@ -17,7 +17,8 @@ class ProxyRotator():
     def __init__(self):
         self.tor_instance_list = []
         self.tor_connection_mode = 'Random'
-        self.tor_instance_list.append(TorInstance(DEFAULT_ID, DEFAULT_INSTANCE_NICK_NAMES[0] ,DEFAULT_PROXY_PORT, DEFAULT_CNTRL_PORT, None, None))
+        self.tor_instance_list.append(TorInstance(DEFAULT_ID, DEFAULT_INSTANCE_NICK_NAMES[0] ,
+                                                  DEFAULT_PROXY_PORT, DEFAULT_CNTRL_PORT, None, None))
         self.tor_instance_counter = len(self.tor_instance_list)
         return
 
@@ -30,22 +31,22 @@ class ProxyRotator():
 
 
     def _add_tor_instance(self, nickname, proxy_port, cntrl_port, exit_policy, circuit_hops):
-        """Function
+        """
+        Function
 
-            Attributes:
-            """
-
+        Attributes:
+        """
         if nickname is None:
             nickname = DEFAULT_INSTANCE_NICK_NAMES[self.tor_instance_counter]
-        self.tor_instance_list.append(TorInstance(self._new_tor_instance_id(), nickname, proxy_port, cntrl_port, exit_policy, circuit_hops))
+            self.tor_instance_list.append(TorInstance(self._new_tor_instance_id(), nickname, proxy_port, cntrl_port,
+                                                      exit_policy, circuit_hops))
         return
 
     def _new_tor_instance_id(self):
         """Function
 
             Attributes:
-            """
-
+        """
         instance_id = self.tor_instance_counter = self.tor_instance_counter + 1
         return instance_id
 
@@ -54,7 +55,7 @@ class ProxyRotator():
         """Function
 
             Attributes:
-            """
+        """
 
         return random.choice(self.tor_instance_list)
 
@@ -70,9 +71,11 @@ class ProxyRotator():
 
         for tor_instance in self.tor_instance_list:
             if tor_instance.connection_count == 4:
-                print '[ %s ]: %s - %s >> Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port)
+                print '[ %s ]: %s - %s >> Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.proxy_port,
+                                                                              tor_instance.cntrl_port)
             else:
-                print '[ %s ]: %s - %s >> Circuit connection count: %s' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port, tor_instance.connection_count)
+                print '[ %s ]: %s - %s >> Circuit connection count: %s' % (tor_instance.nickname, tor_instance.proxy_port,
+                                                                           tor_instance.cntrl_port, tor_instance.connection_count)
         return
 
 
@@ -85,6 +88,7 @@ class ProxyRotator():
         for tor_instance in self.tor_instance_list:
             if tor_instance.tor_instance_id == tor_instance_id:
                 tor_instance.increment_connection_count()
-                print '[ %s ]: %s - %s >> ++Circuit connection count: %s' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port, tor_instance.connection_count)
+                print '[ %s ]: %s - %s >> ++Circuit connection count: %s' % (tor_instance.nickname, tor_instance.proxy_port,
+                                                                             tor_instance.cntrl_port, tor_instance.connection_count)
                 return
         return

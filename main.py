@@ -11,18 +11,18 @@ from main.ProxyRotator import ProxyRotator
 
 
 def main():
-    session = tpc.TorPyCurl()
-    session.validate()
-    session.dns_leak_test()
+    #session = tpc.TorPyCurl()
+    #session.validate()
+    #session.dns_leak_test()
     # session.reset()
     # session.validate()
 
     try:
-        '''
+
         proxyRotator = ProxyRotator()
         proxyRotator._add_tor_instance(None, 9060, 9061, None, None)
         proxyRotator._add_tor_instance(None, 9070, 9071, None, None)
-        proxyRotator._add_tor_instance(None, 9080, 9080, None, None)
+        proxyRotator._add_tor_instance(None, 9080, 9081, None, None)
         proxyRotator.eval_tor_instance()
 
         for index in range(0, 3):
@@ -37,14 +37,8 @@ def main():
 
         proxyRotator.eval_tor_instance()
         #raise Error('This is an error')
-<<<<<<< Updated upstream
-        #raise UrlValueException()
-        
-        print proxyRotator
-        '''
-=======
-        raise UrlValueError()
->>>>>>> Stashed changes
+        print str(proxyRotator)
+
     except Error, arg:
         print 'Error: ', arg.msg
 

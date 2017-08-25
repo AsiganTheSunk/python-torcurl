@@ -10,13 +10,11 @@ from fake_useragent import UserAgent
 from stem.control import Controller, Signal
 
 from main.Response import Response
-<<<<<<< Updated upstream
+
 from main.ProxyRotator import ProxyRotator
 from main.exceptions import *
-=======
 from main.listeners import ExitRelayListener as erl
 
->>>>>>> Stashed changes
 
 LOCAL_HOST = '127.0.0.1'
 
