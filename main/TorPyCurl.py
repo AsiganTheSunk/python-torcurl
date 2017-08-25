@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 
-import os
-import pycurl
+
+import os, pycurl
 from cStringIO import StringIO
 from urllib import urlencode
-
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from stem.control import Controller, Signal
-
-from main.Response import Response
-
-from main.ProxyRotator import ProxyRotator
 from main.exceptions import *
+from main.Response import Response
+from main.ProxyRotator import ProxyRotator
 from main.listeners import ExitRelayListener as erl
 
 
@@ -22,18 +18,13 @@ class TorPyCurl():
     """Class
 
     Attributes:
-        ctrl_port   -- number of port, used to connect to tor and use the stem library
     """
-    def __init__(self, ctrl_port=9051):
+    def __init__(self, proxy_rotator = ProxyRotator):
+        self.proxy_rotator = proxy_rotator
         self.handler = pycurl.Curl()
 
         # TODO read configuration from *.conf
         # TODO cypher the password... plx not in clarinete
-        self.ctrl = Controller.from_port(port=ctrl_port)
-        self.ctrl.authenticate(password='ultramegachachi')
-
-        # Setup TempFile:
-        self.tmpfile = str(os.getcwd() + '/file.tmp')
 
     def reset_handler(self):
         """Function
@@ -52,9 +43,15 @@ class TorPyCurl():
             proxy_port  -- number of proxy port
         """
 
+        tor_instance = self.proxy_rotator.get_tor_instance()
+        tor_instance.add_connection_use_count()
+
         # Setup tor curl options
-        self.handler.setopt(pycurl.PROXY, proxy)
-        self.handler.setopt(pycurl.PROXYPORT, proxy_port)
+        tor_proxy_port = tor_instance.proxy_port
+        tor_proxy_ip = tor_instance.proxy_ip
+
+        self.handler.setopt(pycurl.PROXY, tor_proxy_ip)
+        self.handler.setopt(pycurl.PROXYPORT, tor_proxy_port)
         self.handler.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_SOCKS5_HOSTNAME)
 
     def _curl_setup(self,url, headers={}, attrs={}, ssl=True, timeout=15, user_agent=str(UserAgent().random)):
@@ -97,6 +94,7 @@ class TorPyCurl():
         data = response_buffer.getvalue()
 
         response_buffer.close()
+
         return Response(code, type, data)
 
 
@@ -282,19 +280,6 @@ class TorPyCurl():
             #    print 'TorPyCurl Status: Connection PASS'
             #else:
             #    print 'TorPyCurl Status: Connection FAIL'
-
-        except pycurl.error, error:
-            errno, errstr = error
-            print 'An error occurred: ', errstr
-
-    def reset(self):
-        """Function
-
-        Attributes:
-        """
-        try:
-            print('TorPyCurl Status: Connection Reset ExitRelay')
-            self.ctrl.signal(Signal.NEWNYM)
 
         except pycurl.error, error:
             errno, errstr = error
