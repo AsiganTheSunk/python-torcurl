@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-
 import os, pycurl
+import json
 from cStringIO import StringIO
 from urllib import urlencode
 from bs4 import BeautifulSoup
@@ -10,7 +10,6 @@ from main.exceptions import *
 from main.Response import Response
 from main.ProxyRotator import ProxyRotator
 from main.listeners import ExitRelayListener as erl
-
 
 LOCAL_HOST = '127.0.0.1'
 
@@ -22,9 +21,11 @@ class TorPyCurl():
     def __init__(self, proxy_rotator = ProxyRotator):
         self.proxy_rotator = proxy_rotator
         self.handler = pycurl.Curl()
+        self.user_agent = UserAgent()
 
         # TODO read configuration from *.conf
         # TODO cypher the password... plx not in clarinete
+
 
     def reset_handler(self):
         """Function
@@ -54,7 +55,7 @@ class TorPyCurl():
         self.handler.setopt(pycurl.PROXYPORT, tor_proxy_port)
         self.handler.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_SOCKS5_HOSTNAME)
 
-    def _curl_setup(self,url, headers={}, attrs={}, ssl=True, timeout=15, user_agent=str(UserAgent().random)):
+    def _curl_setup(self,url, headers={}, attrs={}, ssl=True, timeout=15):
         """Function
 
         Attributes:
@@ -76,7 +77,7 @@ class TorPyCurl():
 
         self.handler.setopt(pycurl.TIMEOUT, timeout)
         self.handler.setopt(pycurl.SSL_VERIFYPEER, ssl)
-        self.handler.setopt(pycurl.USERAGENT, user_agent)
+        self.handler.setopt(pycurl.USERAGENT, self.user_agent.random)
 
     def _curl_perform(self):
         """Function
@@ -204,7 +205,7 @@ class TorPyCurl():
         self.reset_handler()
 
         # Set request type: DELETE
-        self.handle.setopt(pycurl.CUSTOMREQUEST, 'DELETE')
+        self.handler.setopt(pycurl.CUSTOMREQUEST, 'DELETE')
 
         # Common
         self._proxy_setup()
@@ -217,7 +218,6 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error ocurred: ', errstr
 
-
     def validate(self, url='https://check.torproject.org/', ssl=True, timeout=15):
         """Function
 
@@ -226,7 +226,6 @@ class TorPyCurl():
             ssl     --
             timeout --
         """
-
         try:
             response = self.get(url=url, ssl=ssl, timeout=timeout)
             soup = BeautifulSoup(response.data, 'html.parser')
@@ -298,7 +297,23 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error occurred: ', errstr
 
+    '''
+    def login(self, url='', user='', passwd='', ssl=True, timeout=15):
+        attrs = {'user':user, 'password':passwd}
+        self.reset_handler()
+        self.handler.setopt(pycurl.FOLLOWLOCATION, 1)
+        self.handler.setopt(pycurl.COOKIEFILE, './cookie_test.txt')
+        self.handler.setopt(pycurl.COOKIEJAR, './cookie_test.txt')
+        self.handler.setopt(pycurl.POST, True)
+        self.handler.setopt(pycurl.POSTFIELDS, urlencode(attrs))
+        self._proxy_setup()
+        self._curl_setup(url=url, ssl=ssl, timeout=timeout)
 
+        try:
+            return self._curl_perform()
 
+        except pycurl.error, error:
+            errno, errstr = error
+            print 'An error occurred: ', errstr
 
-
+    '''

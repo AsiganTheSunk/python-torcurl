@@ -107,10 +107,11 @@ class ProxyRotator():
 
             Attributes:
             """
-        if tor_instance.connection_count == DEFAULT_CONNECTION_USE_LIMIT:
+        if tor_instance.connection_count >= tor_instance.connection_reset_threshold:
             print '[ %s ]: %s - %s TOR Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port)
             tor_instance.reset()
-        return
+            return False
+        return True
 
     def increment_connection_count(self, tor_instance_id):
         """Function
