@@ -180,6 +180,7 @@ proxy_rotator.add_tor_instance(None, 9060, 9061, None, None)
 proxy_rotator.add_tor_instance(None, 9070, 9071, None, None)
 session = TorPyCurl(proxy_rotator)
 
+print('SEQUENTIAL TEST')
 for i in range(0,4):
    session.validate()
    
