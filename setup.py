@@ -1,10 +1,10 @@
 from distutils.core import setup
 
 setup(
-    name='python-torcurl',
+    name='torcurl2',
     version='0.1',
-    packages=['torcurl'],
-    url='https://github.com/AsiganTheSunk/python-torcurl/',
+    packages=['torcurl2'],
+    url='https://github.com/AsiganTheSunk/torcurl2/',
     license='',
     author='asigan',
     author_email='asiganthesunk@gmail.com',

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import random
+
 import stem
 # import sys
 from torcurl.TorInstance import TorInstance
