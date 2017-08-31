@@ -4,7 +4,15 @@ align="right" width="50">](https://www.python.org/)
 
 ## Description
 
-python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl**. Likewise to further hide your identity the user agent will be provided by **FakeUserAgent**. 
+python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl**. Likewise to further hide your identity the user agent will be provided by **fakeuseragent** and also use multiple tor instances to alternate the connections beetween them using the ProxyRotator included in this library.
+
+### Features
+
+| SO	| Curl	| Tor	| ProxyChain	| 
+|:-------------:|:-------------:|:-----------:|:------------:|
+| Linux| x | x | - |
+| Windows - | - | - |
+
 
 ## Getting Started
 
@@ -13,9 +21,10 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Index of Contents
 
-1. [Requirements](#installation)
+1. [Requirements](#requirements)
    * [Dependencies](#dependencies)
    * [Installation](#installation)
+   * [Basic Configuration](#basicconfiguration)
 2. [Usage](#usage)
 3. [License](#license)
 
@@ -45,12 +54,15 @@ pycurl==
 
 ```
 
-| SO       | Curl        | Tor | ProxyChain | 
-|:-------------:|:-------------:|:-----------:|:------------:|
-| Linux| x | x | | |
-| Windows | | | | |
+### Basic Configuration
+
+#### Tor Configuration
+
+
 
 ### Usage
+
+Once you have sorted out the basic configuration of the tor instance, the only thing you need to worry about now will be the following lines of code to easily use the library.
 
 ```python
 
