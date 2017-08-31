@@ -57,10 +57,10 @@ The following list of libraries are needed to make python-torcurl work.
 
 ```txt
 
-beautifulsoup4==4.5.3
-fake-useragent==0.1.7
-pycurl==7.43.0
-stem==1.5.4
+beautifulsoup4>=4.5.3
+fakeuseragent>=0.1.5
+pycurl>=7.43.0
+stem>=1.5.4
 
 ```
 
