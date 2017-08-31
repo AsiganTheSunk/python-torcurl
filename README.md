@@ -25,16 +25,19 @@ These instructions will get you a copy of the project up and running on your loc
 ## Index of Contents
 
 1. [Requirements](#requirements)
-   	* [Dependencies](#dependencies)
+      * [Dependencies](#dependencies)
    	* [Installation](#installation)
-   	    + [pip](#pip)
-   	    + [source](#source)
+         + [pip](#pip)
+         + [source](#source)
    	* [Configuration](#configuration)
-   		+ [Tor](#tor)
- 	
+         + [tor](#tor)
+         + [tor_instance](#tor_instance)
+         + [stem](#stem)
 2. [Usage](#usage)
-   * [Basic](#basic)
-   * [Advanced](#advanced)
+      * [Basic](#basic)
+         + [get_request](#get_request)
+      * [Advanced](#advanced)
+         + [multitor_instance](#multitor_instance)
 3. [License](#license)
 
 
@@ -57,16 +60,16 @@ The following list of libraries are needed to make python-torcurl work.
 
 ```txt
 
-beautifulsoup4==4.5.3
-fake-useragent==0.1.7
-pycurl==7.43.0
-stem==1.5.4
+beautifulsoup4>=4.5.3
+fakeuseragent>=0.1.5
+pycurl>=7.43.0
+stem>=1.5.4
 
 ```
 
 ### Installation
 
-#### pip
+#### pip (`soon!`)
 
 ```bash
 
@@ -88,8 +91,8 @@ Once you have cloned the repository, go to the main folder of python-torcurl fol
 ```bash
 > cd python-torcurl
 
-#Install python dependencies.
-#Depending on your setup, one or both of these may require sudo.
+# Install python dependencies.
+# Depending on your setup, one or both of these may require sudo.
  
 > pip install -r requirements.txt
 > python setup.py install
@@ -99,19 +102,15 @@ Once you have cloned the repository, go to the main folder of python-torcurl fol
 ### Configuration
 
 #### Tor
-
-##### Stem
-In order to make stem work with the library you need to configure the torrc in the (`/etc/tor/torrc`) to use cntrl_port 9051
-and socks_port 9050. Furthermore you need to use the following commands to create the hash to be able to authenticate yourself
-in the service.
+To install tor in linux enviroment such as Ubuntu/Debian.
 
 ```bash
 
-> tor --hash-password dummypass
+> apt-get install tor
 
 ```
 
-##### Multi tor_instance
+##### Tor_instance
 To use multiple tor instances in the ProxyRotator, you need to create a new torrc.n. With 
 the following lines you can achive this.
 
@@ -137,6 +136,17 @@ Finally run force a new instance of tor to run using your configuration file.
 
 ```
 
+##### Stem
+In order to make stem work with the library you need to configure the torrc in the (`/etc/tor/torrc`) to use cntrl_port 9051
+and socks_port 9050. Furthermore you need to use the following commands to create the hash to be able to authenticate yourself
+in the service.
+
+```bash
+
+> tor --hash-password dummypass
+
+```
+
 ### Usage
 
 Once you have sorted out the basic configuration of the tor instance, the only thing you 
@@ -144,7 +154,7 @@ need to worry about now will be the following lines of code to easily use the li
 
 #### Basic
 
-##### GET Request
+##### GET_Request
 
 ```python
 
@@ -155,8 +165,9 @@ from torcurl.TorPyCurl import TorPyCurl
 # parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
-response = session.get(url='https://www.somewebhere.com')
-
+response = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, 
+                       ssl=True, timeout=15)
+                           
 print response.code
 print response.data
 
@@ -164,7 +175,9 @@ print response.data
 
 #### Advanced
 
-##### Multiple tor_instance
+##### Multitor_instance
+Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
+and for this example will help you see how the library manages the swap beetween instances.
 
 ```python
 
@@ -177,29 +190,40 @@ proxy_rotator.add_tor_instance(None, 9060, 9061, None, None)
 proxy_rotator.add_tor_instance(None, 9070, 9071, None, None)
 session = TorPyCurl(proxy_rotator)
 
-response_get = session.get(url='https://www.somewebhere.com', headers={},
+print('SEQUENTIAL TEST')
+for i in range(0,4):
+   session.validate()
+   
+```
+The output for the *session.validate()* should be something like this.
 
-                           attrs={}, ssl=True, timeout=15)
-response_put = session.put(url='https://www.somewebhere.com', headers={},
-
-                           attrs={}, ssl=True, timeout=15)
-response_post = session.post(url='https://www.somewebhere.com', headers={}, 
-
-                           attrs={}, ssl=True, timeout=15)
-response_delete = session.delete(url='https://www.somewebhere.com', headers={}, 
-                           attrs={}, ssl=True, timeout=15)
-
+```bash
+> SEQUENTIAL TEST
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 91.219.237.229
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 91.219.237.229
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
 ```
 
 ##### Configure tor_instance
 
 ```python
 
+soon!
+
 ```
 
 ##### Configure torpycurl
 
 ```python
+   
+soon!
 
 ```
 
