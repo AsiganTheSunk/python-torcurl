@@ -86,13 +86,13 @@ git clone https://github.com/AsiganTheSunk/python-torcurl
 Once you have cloned the repository, go to the main folder of python-torcurl follow the instructions below. This will download and install all the dependecies found on the requirements.txt, so the sotfware can function properly.
 
 ```bash
-cd python-torcurl
+> cd python-torcurl
 
 #Install python dependencies.
 #Depending on your setup, one or both of these may require sudo.
  
-pip install -r requirements.txt
-python setup.py install
+> pip install -r requirements.txt
+> python setup.py install
 
 ```
 
@@ -100,11 +100,47 @@ python setup.py install
 
 #### Tor
 
+##### Stem
+In order to make stem work with the library you need to configure the torrc in the (`/etc/tor/torrc`) to use cntrl_port 9051
+and socks_port 9050. Furthermore you need to use the following commands to create the hash to be able to authenticate yourself
+in the service.
 
+```bash
+
+> tor --hash-password dummypass
+
+```
+
+##### Multi tor_instance
+To use multiple tor instances in the ProxyRotator, you need to create a new torrc.n. With 
+the following lines you can achive this.
+
+```bash
+
+> tourch /etc/tor/torrc.1
+
+```
+Edit the new created file with, in this case socks_port will be 9060 and cntrl_port 9061.
+
+```
+SocksPort 9060
+ControlPort 9061
+DataDirectory /var/lib/tor1
+HashedControlPassword 'yourhashedpassword'
+
+```
+Finally run force a new instance of tor to run using your configuration file.
+
+```bash
+
+> tor -f /etc/tor/torrc.1
+
+```
 
 ### Usage
 
-Once you have sorted out the basic configuration of the tor instance, the only thing you need to worry about now will be the following lines of code to easily use the library.
+Once you have sorted out the basic configuration of the tor instance, the only thing you 
+need to worry about now will be the following lines of code to easily use the library.
 
 #### Basic
 
@@ -115,7 +151,8 @@ Once you have sorted out the basic configuration of the tor instance, the only t
 from torcurl.ProxyRotator import ProxyRotator
 from torcurl.TorPyCurl import TorPyCurl
 
-# By default the ProxyRotator class will initialize a tor instances with the parameters given by the config.cfg
+# By default the ProxyRotator class will initialize a tor instances with the 
+# parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
 response = session.get(url='https://www.somewebhere.com')
@@ -140,10 +177,17 @@ proxy_rotator.add_tor_instance(None, 9060, 9061, None, None)
 proxy_rotator.add_tor_instance(None, 9070, 9071, None, None)
 session = TorPyCurl(proxy_rotator)
 
-response_get = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
-response_put = session.put(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
-response_post = session.post(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
-response_delete = session.delete(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
+response_get = session.get(url='https://www.somewebhere.com', headers={},
+
+                           attrs={}, ssl=True, timeout=15)
+response_put = session.put(url='https://www.somewebhere.com', headers={},
+
+                           attrs={}, ssl=True, timeout=15)
+response_post = session.post(url='https://www.somewebhere.com', headers={}, 
+
+                           attrs={}, ssl=True, timeout=15)
+response_delete = session.delete(url='https://www.somewebhere.com', headers={}, 
+                           attrs={}, ssl=True, timeout=15)
 
 ```
 
