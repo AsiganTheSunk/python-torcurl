@@ -27,8 +27,8 @@ These instructions will get you a copy of the project up and running on your loc
 1. [Requirements](#requirements)
    	* [Dependencies](#dependencies)
    	* [Installation](#installation)
-   	    + [pip](#pip)
-   	    + [source](#source)
+   	    + [pip](#from pip)
+   	    + [source](#from source)
    	* [Configuration](#configuration)
    		+ [Tor](#tor)
  	
