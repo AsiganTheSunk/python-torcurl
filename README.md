@@ -4,7 +4,7 @@ align="right" width="50">](https://www.python.org/)
 
 ## Description
 
-python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl**. Likewise to further hide your identity the user agent will be provided by **fake-useragent** and also the oportunity to use multiple tor instances to alternate the connections beetween them using the ProxyRotator included in this library.
+python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl**. Likewise to further hide your identity the user agent will be provided by **fake-useragent** and also you can use multiple tor instances to alternate the connections beetween them using the ProxyRotator included in this library.
 
 ### Features
 
