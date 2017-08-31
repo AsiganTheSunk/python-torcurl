@@ -24,7 +24,7 @@ These instructions will get you a copy of the project up and running on your loc
 1. [Requirements](#requirements)
    * [Dependencies](#dependencies)
    * [Installation](#installation)
-   * [Basic Configuration](#basicconfiguration)
+   * [Configuration](#configuration)
 2. [Usage](#usage)
 3. [License](#license)
 
@@ -54,9 +54,9 @@ pycurl==
 
 ```
 
-### Basic Configuration
+### Configuration
 
-#### Tor Configuration
+#### Tor
 
 
 
