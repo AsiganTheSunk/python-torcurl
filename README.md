@@ -1,5 +1,3 @@
-python-torcurl
-
 # python-torcurl
 [<img src="https://www.python.org/static/opengraph-icon-200x200.png" title="Python.org"
 align="right" width="50">](https://www.python.org/)
