@@ -6,10 +6,10 @@ from cStringIO import StringIO
 from urllib import urlencode
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from main.exceptions import *
-from main.Response import Response
-from main.ProxyRotator import ProxyRotator
-from main.listeners import ExitRelayListener as erl
+from torcurl.exceptions import *
+from torcurl.Response import Response
+from torcurl.ProxyRotator import ProxyRotator
+# from torcurl.listeners import ExitRelayListener as erl
 
 LOCAL_HOST = '127.0.0.1'
 
@@ -246,7 +246,7 @@ class TorPyCurl():
 
 
 
-    def dns_leak_test(self, url='https://www.perfect-privacy.com/check-ip/', ssl=True, timeout=15):
+    def _dns_leak_test(self, url='https://www.perfect-privacy.com/check-ip/', ssl=True, timeout=15):
         #POST y 2 coockies hacen falta al menos. usar tamper data
 
         """Function
@@ -284,7 +284,7 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error occurred: ', errstr
 
-
+    '''
     def exits(self, url='https://check.torproject.org/exit-addresses'):
         return BeautifulSoup(self.get(url=url), 'html.parser')
 
@@ -297,7 +297,7 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error occurred: ', errstr
 
-    '''
+    
     def login(self, url='', user='', passwd='', ssl=True, timeout=15):
         attrs = {'user':user, 'password':passwd}
         self.reset_handler()

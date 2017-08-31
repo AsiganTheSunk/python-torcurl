@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from main.TorPyCurl import TorPyCurl
-from main.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
+from torcurl.ProxyRotator import ProxyRotator
 
 def test0_create_torpycurl():
     tpc = TorPyCurl()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from main.ProxyRotator import ProxyRotator
+from torcurl.ProxyRotator import ProxyRotator
 
 def test0_create_proxy_rotator():
     proxy_rotator = ProxyRotator()

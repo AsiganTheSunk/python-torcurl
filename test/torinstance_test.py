@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from main.TorInstance import TorInstance
+from torcurl.TorInstance import TorInstance
 
 def test0_create_tor_instance():
     tor_instance = TorInstance(0, None, 9050, 9051, None, None)

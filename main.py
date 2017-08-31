@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from main import TorPyCurl as tpc
-from main.exceptions.exceptions import UrlValueError, Error
-from main.listeners import ExitRelayListener as erl
-from main.ProxyRotator import TorInstance
-from main.ProxyRotator import ProxyRotator
+from torcurl import TorPyCurl as tpc
+from torcurl.exceptions.exceptions import UrlValueError, Error
+from torcurl.listeners import ExitRelayListener as erl
+from torcurl.ProxyRotator import TorInstance
+from torcurl.ProxyRotator import ProxyRotator
 from time import sleep
 import json
 from fake_useragent import UserAgent

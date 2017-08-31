@@ -3,7 +3,7 @@
 import random
 import stem
 import sys
-from main.TorInstance import TorInstance
+from torcurl.TorInstance import TorInstance
 
 DEFAULT_ID = 0
 DEFAULT_PROXY_PORT = 9050
