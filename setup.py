@@ -1,9 +1,9 @@
 from distutils.core import setup
 
 setup(
-    name='torcurl2',
+    name='torcurl',
     version='0.1',
-    packages=['torcurl2'],
+    packages=['torcurl'],
     url='https://github.com/AsiganTheSunk/torcurl2/',
     license='',
     author='asigan',

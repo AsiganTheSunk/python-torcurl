@@ -6,8 +6,7 @@ from urllib import urlencode
 
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from torcurl.ProxyRotator import ProxyRotator
-from torcurl.exceptions import *
+from ProxyRotator import ProxyRotator
 
 from Response import Response
 
