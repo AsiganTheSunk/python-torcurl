@@ -66,7 +66,7 @@ stem==1.5.4
 
 ### Installation
 
-#### pip
+#### pip (`soon!`)
 
 ```bash
 
@@ -88,8 +88,8 @@ Once you have cloned the repository, go to the main folder of python-torcurl fol
 ```bash
 > cd python-torcurl
 
-#Install python dependencies.
-#Depending on your setup, one or both of these may require sudo.
+# Install python dependencies.
+# Depending on your setup, one or both of these may require sudo.
  
 > pip install -r requirements.txt
 > python setup.py install
@@ -155,8 +155,9 @@ from torcurl.TorPyCurl import TorPyCurl
 # parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
-response = session.get(url='https://www.somewebhere.com')
-
+response = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, 
+                       ssl=True, timeout=15)
+                           
 print response.code
 print response.data
 
@@ -165,6 +166,8 @@ print response.data
 #### Advanced
 
 ##### Multiple tor_instance
+Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
+and for this example will help you see how the library manages the swap beetween instances.
 
 ```python
 
@@ -177,29 +180,39 @@ proxy_rotator.add_tor_instance(None, 9060, 9061, None, None)
 proxy_rotator.add_tor_instance(None, 9070, 9071, None, None)
 session = TorPyCurl(proxy_rotator)
 
-response_get = session.get(url='https://www.somewebhere.com', headers={},
+for i in range(0,4):
+   session.validate()
+   
+```
+The output for the *session.validate()* should be something like this.
 
-                           attrs={}, ssl=True, timeout=15)
-response_put = session.put(url='https://www.somewebhere.com', headers={},
-
-                           attrs={}, ssl=True, timeout=15)
-response_post = session.post(url='https://www.somewebhere.com', headers={}, 
-
-                           attrs={}, ssl=True, timeout=15)
-response_delete = session.delete(url='https://www.somewebhere.com', headers={}, 
-                           attrs={}, ssl=True, timeout=15)
-
+```bash
+> SEQUENTIAL TEST
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 91.219.237.229
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 91.219.237.229
+> TorPyCurl Status: Connection PASS
+> TorPyCurl Connection address: 51.15.34.210
+> TorPyCurl Status: Connection PASS
 ```
 
 ##### Configure tor_instance
 
 ```python
 
+soon!
+
 ```
 
 ##### Configure torpycurl
 
 ```python
+   
+soon!
 
 ```
 
