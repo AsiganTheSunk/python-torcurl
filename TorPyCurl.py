@@ -1,15 +1,17 @@
 #!/usr/bin/env python
 
-import os, pycurl
-import json
+import pycurl
 from cStringIO import StringIO
 from urllib import urlencode
+
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
-from torcurl.exceptions import *
-from torcurl.Response import Response
 from torcurl.ProxyRotator import ProxyRotator
-# from torcurl.listeners import ExitRelayListener as erl
+from torcurl.exceptions import *
+
+from Response import Response
+
+# from torcurl2.listeners import ExitRelayListener as erl
 
 LOCAL_HOST = '127.0.0.1'
 
