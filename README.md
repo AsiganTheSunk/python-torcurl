@@ -25,19 +25,18 @@ These instructions will get you a copy of the project up and running on your loc
 ## Index of Contents
 
 1. [Requirements](#requirements)
-   	* [Dependencies](#dependencies)
+      * [Dependencies](#dependencies)
    	* [Installation](#installation)
-   	    + [pip](#pip)
-   	    + [source](#source)
+         + [pip](#pip)
+         + [source](#source)
    	* [Configuration](#configuration)
-   		+ [tor](#tor)
+         + [tor](#tor)
+         + [tor_instance](#tor_instance)
          + [stem](#stem)
-         + [tor_instance](tor_instance)
- 	
 2. [Usage](#usage)
-   * [Basic](#basic)
+      * [Basic](#basic)
          + [get_request](#get_request)
-   * [Advanced](#advanced)
+      * [Advanced](#advanced)
          + [multitor_instance](#multitor_instance)
 3. [License](#license)
 
