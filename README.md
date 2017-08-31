@@ -30,11 +30,15 @@ These instructions will get you a copy of the project up and running on your loc
    	    + [pip](#pip)
    	    + [source](#source)
    	* [Configuration](#configuration)
-   		+ [Tor](#tor)
+   		+ [tor](#tor)
+         + [stem](#stem)
+         + [tor_instance](tor_instance)
  	
 2. [Usage](#usage)
    * [Basic](#basic)
+         + [get_request](#get_request)
    * [Advanced](#advanced)
+         + [multitor_instance](#multitor_instance)
 3. [License](#license)
 
 
@@ -99,19 +103,15 @@ Once you have cloned the repository, go to the main folder of python-torcurl fol
 ### Configuration
 
 #### Tor
-
-##### Stem
-In order to make stem work with the library you need to configure the torrc in the (`/etc/tor/torrc`) to use cntrl_port 9051
-and socks_port 9050. Furthermore you need to use the following commands to create the hash to be able to authenticate yourself
-in the service.
+To install tor in linux enviroment such as Ubuntu/Debian.
 
 ```bash
 
-> tor --hash-password dummypass
+> apt-get install tor
 
 ```
 
-##### Multi tor_instance
+##### Tor_instance
 To use multiple tor instances in the ProxyRotator, you need to create a new torrc.n. With 
 the following lines you can achive this.
 
@@ -137,6 +137,17 @@ Finally run force a new instance of tor to run using your configuration file.
 
 ```
 
+##### Stem
+In order to make stem work with the library you need to configure the torrc in the (`/etc/tor/torrc`) to use cntrl_port 9051
+and socks_port 9050. Furthermore you need to use the following commands to create the hash to be able to authenticate yourself
+in the service.
+
+```bash
+
+> tor --hash-password dummypass
+
+```
+
 ### Usage
 
 Once you have sorted out the basic configuration of the tor instance, the only thing you 
@@ -144,7 +155,7 @@ need to worry about now will be the following lines of code to easily use the li
 
 #### Basic
 
-##### GET Request
+##### GET_Request
 
 ```python
 
@@ -165,7 +176,7 @@ print response.data
 
 #### Advanced
 
-##### Multiple tor_instance
+##### Multitor_instance
 Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
 and for this example will help you see how the library manages the swap beetween instances.
 
