@@ -1,0 +1,4 @@
+beautifulsoup4>=4.5.3
+fakeuseragent>=0.1.5
+pycurl>=7.43.0
+stem>=1.5.4

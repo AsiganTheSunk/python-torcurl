@@ -2,7 +2,7 @@
 
 from stem.control import Controller, Signal
 import time
-from colorama import Fore, Style
+# from colorama import Fore, Style
 
 DEFAULT_PROXY_PORT = 9050
 DEFAULT_CNTRL_PORT = 9051
@@ -11,8 +11,7 @@ DEFAULT_RESET_THRESHOLD = 30
 DEFAULT_CIRCUIT_HOPS = 'X'
 LOCAL_HOST = '127.0.0.1'
 
-UPPER_TIMER_LIMIT = 600
-LOWER_TIMER_LIMIT = 300
+
 
 # force circuit extension to provide n jumps if needed when the tor instance it's created.
 # force exit policy to the socket to provide some security
@@ -55,7 +54,7 @@ class TorInstance():
         timer = time.time()
         return('TorInstance ID: %s\n Nickname: %s\n ProxyPort: %s, CntrlPort: %s\n Circuit Dirt: %s, Circuit Hops: %s\n ExitPolicy: {%s}\n'
                ' Country List: %s' % (
-                   self.tor_instance_id, self.nickname, self.proxy_port, self.cntrl_port, self.colored_dirtyness(timer - self.circuit_dirtyness), self.circuit_hops, self.exit_policy,
+                   self.tor_instance_id, self.nickname, self.proxy_port, self.cntrl_port, timer - self.circuit_dirtyness, self.circuit_hops, self.exit_policy,
                    self.country_list
         ))
 
@@ -86,11 +85,3 @@ class TorInstance():
         except:
             print 'An error occurred: '
 
-    def colored_dirtyness(self, timer):
-
-        if timer < LOWER_TIMER_LIMIT:
-            return (Fore.LIGHTGREEN_EX + Style.DIM + 'CLEAN' + Style.RESET_ALL)
-        elif timer < UPPER_TIMER_LIMIT:
-            return (Fore.LIGHTMAGENTA_EX + Style.DIM + 'SEMI-CLEAN' + Style.RESET_ALL)
-        else:
-            return (Fore.LIGHTRED_EX + Style.DIM + 'DIRTY' + Style.RESET_ALL)

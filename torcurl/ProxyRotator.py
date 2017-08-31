@@ -2,7 +2,7 @@
 
 import random
 import stem
-import sys
+# import sys
 from torcurl.TorInstance import TorInstance
 
 DEFAULT_ID = 0
@@ -57,7 +57,7 @@ class ProxyRotator():
             control_port = stem.socket.ControlPort(port=cntrl_port)
         except stem.SocketError as exc:
             print 'Unable to connect to port %s (%s)' % (cntrl_port, exc)
-            #sys.exit(1)
+            sys.exit(1)
         return
 
     def _new_tor_instance_id(self):
