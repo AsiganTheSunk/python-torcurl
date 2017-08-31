@@ -27,8 +27,8 @@ These instructions will get you a copy of the project up and running on your loc
 1. [Requirements](#requirements)
    	* [Dependencies](#dependencies)
    	* [Installation](#installation)
-   	    + [pip](#from pip)
-   	    + [source](#from source)
+   	    + [pip](#pip)
+   	    + [source](#source)
    	* [Configuration](#configuration)
    		+ [Tor](#tor)
  	
@@ -53,10 +53,12 @@ The following list of libraries are needed to make python-torcurl work.
 * [pycurl][pycurl_link]
 * [stem][stem_link]
 
+###### Requirements.txt
+
 ```txt
 
 beautifulsoup4==4.5.3
-fakeuseragent==0.1.7
+fake-useragent==0.1.7
 pycurl==7.43.0
 stem==1.5.4
 
@@ -64,7 +66,7 @@ stem==1.5.4
 
 ### Installation
 
-#### From pip
+#### pip
 
 ```bash
 
@@ -72,7 +74,7 @@ pip install python-torcurl
 
 ```
 
-#### From Source
+#### source
 First clone the repository from git.
 
 ```bash
