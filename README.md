@@ -16,10 +16,8 @@ These instructions will get you a copy of the project up and running on your loc
 1. [Requirements](#installation)
    * [Dependencies](#dependencies)
    * [Installation](#installation)
-2. [Plugins](#plugins)
-   * [FileMapper][readme_fm_link]
-3. [Usage](#usage)
-4. [License](#license)
+2. [Usage](#usage)
+3. [License](#license)
 
 
 ## Requirements
