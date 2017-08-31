@@ -14,6 +14,7 @@ python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 con
 | Windows	| - | - | - |
 
 ### Future
+
 The big TODO's are finishing and polishing the actual code, but in the near future include threading to the module and have a reliable way to test ip and dns leaks in the circuits.
 
 ## Getting Started
@@ -50,15 +51,44 @@ The following list of libraries are needed to make python-torcurl work.
 * [pycurl][pycurl_link]
 * [stem][stem_link]
 
-### Installation
+```txt
 
-Go to the main folder of python-torcurl and run setup.py. This will download and install all the dependecies found on the requirements.txt, so the sotfware can function properly.
-
-```
 beautifulsoup4==4.5.3
 fakeuseragent==0.1.7
 pycurl==7.43.0
 stem==1.5.4
+
+```
+
+### Installation
+
+#### From pip
+
+```bash
+
+pip install python-torcurl
+
+```
+
+#### From Source
+First clone the repository from git.
+
+```bash
+
+git clone https://github.com/AsiganTheSunk/python-torcurl
+
+```
+
+Once you have cloned the repository, go to the main folder of python-torcurl follow the instructions below. This will download and install all the dependecies found on the requirements.txt, so the sotfware can function properly.
+
+```bash
+cd python-torcurl
+
+#Install python dependencies.
+#Depending on your setup, one or both of these may require sudo.
+ 
+pip install -r requirements.txt
+python setup.py install
 
 ```
 
@@ -74,12 +104,14 @@ Once you have sorted out the basic configuration of the tor instance, the only t
 
 #### Basic
 
+##### GET Request
+
 ```python
 
 from TorCurl import ProxyRotator
 from TorCurl import TorPyCurl
 
-# By default the ProxyRotator class will get
+# By default the ProxyRotator class will initialize a tor instances with the parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
 response = session.get(url='https://www.somewebhere.com')
@@ -90,6 +122,8 @@ print response.data
 ```
 
 #### Advanced
+
+##### Multiple tor_instance
 
 ```python
 
@@ -106,6 +140,18 @@ response_get = session.get(url='https://www.somewebhere.com', headers={}, attrs=
 response_put = session.put(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
 response_post = session.post(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
 response_delete = session.delete(url='https://www.somewebhere.com', headers={}, attrs={}, ssl=True, timeout=15)
+
+```
+
+##### Configure tor_instance
+
+```python
+
+```
+
+##### Configure torpycurl
+
+```python
 
 ```
 
