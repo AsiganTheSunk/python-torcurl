@@ -6,9 +6,9 @@
 
 countries\.txt
 
-/torcurl/cache/
+/cache/
 
-/torcurl/listeners/
+/listeners/
 
 /main\.py
 
