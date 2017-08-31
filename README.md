@@ -27,6 +27,8 @@ These instructions will get you a copy of the project up and running on your loc
 1. [Requirements](#requirements)
    	* [Dependencies](#dependencies)
    	* [Installation](#installation)
+   	    + [pip](#pip)
+   	    + [source](#source)
    	* [Configuration](#configuration)
    		+ [Tor](#tor)
  	
@@ -108,8 +110,8 @@ Once you have sorted out the basic configuration of the tor instance, the only t
 
 ```python
 
-from TorCurl import ProxyRotator
-from TorCurl import TorPyCurl
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
 
 # By default the ProxyRotator class will initialize a tor instances with the parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
@@ -127,8 +129,8 @@ print response.data
 
 ```python
 
-from TorCurl import ProxyRotator
-from TorCurl import TorPyCurl
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
 
 # By default the mode it's set to random
 proxy_rotator = ProxyRotator(mode='sequential')
