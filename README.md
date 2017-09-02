@@ -37,12 +37,13 @@ These instructions will get you a copy of the project up and running on your loc
          + [stem](#stem)
 2. [Usage](#usage)
       * [Basic](#basic)
-         + [setup](#basic_setup)
-         + [request](#basic_request)
+         + [setup](#setup)
+         + [request](#request)
          + [parameters](#basic_parameters)
          + [tor](basic_tor)
       * [Advanced](#advanced)
          + [proxy_rotator](#proxy_rotator)
+         + [tor](#multi_tor)
 
 3. [License](#license)
 
@@ -166,8 +167,7 @@ from torcurl.TorPyCurl import TorPyCurl
 # parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
-response = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, 
-                       ssl=True, timeout=15)
+session.get(url='https://www.somewebhere.com')
                            
 
 ```
@@ -181,7 +181,7 @@ from torcurl.TorPyCurl import TorPyCurl
 
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
-response = session.get(url='https://www.somewebhere.com')
+session.get(url='https://www.somewebhere.com')
 
 ```
 
@@ -202,7 +202,7 @@ print response.data
 
 ```
 
-##### parameters
+##### basic_parameters
 
 ```python
 
@@ -218,11 +218,12 @@ response = session.get(url='https://www.somewebhere.com', headers={}, attrs={},
                        ssl=True, timeout=15)
                            
 print response.code
+
 print response.data
 
 ```
 
-##### tor
+##### basic_tor
 
 
 ```python
@@ -247,7 +248,7 @@ proxy_rotator = ProxyRotator(mode='sequential')
 
 ```
 
-##### multitor
+##### multi_tor
 Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
 and for this example will help you see how the library manages the swap beetween instances.
 
