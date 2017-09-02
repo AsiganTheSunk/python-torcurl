@@ -4,7 +4,9 @@ align="right" width="50">](https://www.python.org/)
 
 ## Description
 
-python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl**. Likewise to further hide your identity the user agent will be provided by **fake-useragent** and also you can use multiple tor instances to alternate the connections beetween them using the ProxyRotator included in this library.
+python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 connections`) with curl in a simple way. This library focuses on giving anonymity to your connections throught the internet. It Offers, some degree of control over tor processes using **stem** and over curl configuration parameters using **pycurl** . Likewise to further hide your identity the user agent will be provided by **fake-useragent**.
+
+Also it offers the chance to use multiple tor instances to alternate the connections beetween, in sequential or random style using the **ProxyRotator** functionalities.
 
 ### Features
 
@@ -15,11 +17,11 @@ python-torcurl it's a library that gives easy access to use **tor** (`SOCKS5 con
 
 ### Future
 
-The big TODO's are finishing and polishing the actual code, but in the near future include threading to the module and have a reliable way to test ip and dns leaks in the circuits.
+The big TODO's are finishing and polishing the actual code, but in the near future include threading to the module and have a reliable way to test dns leaks in the tor circuits.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development or testing purposes. 
+These instructions will get you a copy of the project up and running on your local machine for development or testing purposes. Hope you enjoy it.
 
 
 ## Index of Contents
@@ -35,9 +37,13 @@ These instructions will get you a copy of the project up and running on your loc
          + [stem](#stem)
 2. [Usage](#usage)
       * [Basic](#basic)
-         + [get_request](#get_request)
+         + [setup](#basic_setup)
+         + [request](#basic_request)
+         + [parameters](#basic_parameters)
+         + [tor](basic_tor)
       * [Advanced](#advanced)
-         + [multitor_instance](#multitor_instance)
+         + [proxy_rotator](#proxy_rotator)
+
 3. [License](#license)
 
 
@@ -55,17 +61,6 @@ The following list of libraries are needed to make python-torcurl work.
 * [fake-useragent][fake-useragent_link]
 * [pycurl][pycurl_link]
 * [stem][stem_link]
-
-###### Requirements.txt
-
-```txt
-
-beautifulsoup4>=4.5.3
-fakeuseragent>=0.1.5
-pycurl>=7.43.0
-stem>=1.5.4
-
-```
 
 ### Installation
 
@@ -88,6 +83,8 @@ git clone https://github.com/AsiganTheSunk/python-torcurl
 
 Once you have cloned the repository, go to the main folder of python-torcurl follow the instructions below. This will download and install all the dependecies found on the requirements.txt, so the sotfware can function properly.
 
+(`soon!`)
+
 ```bash
 > cd python-torcurl
 
@@ -98,6 +95,8 @@ Once you have cloned the repository, go to the main folder of python-torcurl fol
 > python setup.py install
 
 ```
+
+**[Back to index of contents](#index-of-contents)**
 
 ### Configuration
 
@@ -147,6 +146,8 @@ in the service.
 
 ```
 
+**[Back to index of contents](#index-of-contents)**
+
 ### Usage
 
 Once you have sorted out the basic configuration of the tor instance, the only thing you 
@@ -154,7 +155,7 @@ need to worry about now will be the following lines of code to easily use the li
 
 #### Basic
 
-##### GET_Request
+##### setup
 
 ```python
 
@@ -168,16 +169,73 @@ session = TorPyCurl(proxy_rotator)
 response = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, 
                        ssl=True, timeout=15)
                            
+
+```
+
+##### request
+
+```python
+
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
+
+proxy_rotator = ProxyRotator()
+session = TorPyCurl(proxy_rotator)
+response = session.get(url='https://www.somewebhere.com')
+
+```
+
+##### response
+
+```python
+
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
+
+proxy_rotator = ProxyRotator()
+session = TorPyCurl(proxy_rotator)
+response = session.get(url='https://www.somewebhere.com')
+                           
+print response.code
+
+print response.data
+
+```
+
+##### parameters
+
+```python
+
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
+
+proxy_rotator = ProxyRotator()
+session = TorPyCurl(proxy_rotator)
+
+# By default you can set headers, attrs in the request plus 
+# enable ssl encryption as well as setting a time out
+response = session.get(url='https://www.somewebhere.com', headers={}, attrs={}, 
+                       ssl=True, timeout=15)
+                           
 print response.code
 print response.data
 
 ```
 
+##### tor
+
+
+```python
+
+soon!
+
+```
+
 #### Advanced
 
-##### Multitor_instance
-Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
-and for this example will help you see how the library manages the swap beetween instances.
+##### proxy_rotator
+
+showing off modes and a little bit of explanation
 
 ```python
 
@@ -186,6 +244,18 @@ from torcurl.TorPyCurl import TorPyCurl
 
 # By default the mode it's set to random
 proxy_rotator = ProxyRotator(mode='sequential')
+
+```
+
+##### multitor
+Using session.validate() will allow you to easy test if your tor connection it's up and running, testing ip leak
+and for this example will help you see how the library manages the swap beetween instances.
+
+```python
+
+from torcurl.ProxyRotator import ProxyRotator
+from torcurl.TorPyCurl import TorPyCurl
+
 proxy_rotator.add_tor_instance(None, 9060, 9061, None, None)
 proxy_rotator.add_tor_instance(None, 9070, 9071, None, None)
 session = TorPyCurl(proxy_rotator)
@@ -211,26 +281,26 @@ The output for the *session.validate()* should be something like this.
 > TorPyCurl Status: Connection PASS
 ```
 
-##### Configure tor_instance
-
-```python
-
-soon!
-
-```
-
-##### Configure torpycurl
-
-```python
-   
-soon!
-
-```
-
 **[Back to index of contents](#index-of-contents)**
 
 
 ### License
+
+Copyright 2017 asiganthesunk
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+ to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of
+the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+IN THE SOFTWARE.
 
 **[Back to index of contents](#index-of-contents)**
 
