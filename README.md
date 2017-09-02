@@ -167,8 +167,6 @@ from torcurl.TorPyCurl import TorPyCurl
 # parameters given by the config.cfg
 proxy_rotator = ProxyRotator()
 session = TorPyCurl(proxy_rotator)
-session.get(url='https://www.somewebhere.com')
-                           
 
 ```
 
