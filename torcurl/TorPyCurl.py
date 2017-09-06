@@ -18,9 +18,10 @@ class TorPyCurl():
     """Class
 
     Attributes:
+        None    ---
     """
-    def __init__(self, proxy_rotator = ProxyRotator):
-        self.proxy_rotator = proxy_rotator
+    def __init__(self):
+        self.proxy_rotator = ProxyRotator()
         self.handler = pycurl.Curl()
         self.user_agent = UserAgent()
 
@@ -32,24 +33,25 @@ class TorPyCurl():
         """Function
 
         Attributes:
+            None    ---
         """
         self.handler.close()
         self.handler = pycurl.Curl()
 
 
-    def _proxy_setup(self, proxy=LOCAL_HOST, proxy_port=9050):
-        """Function
+    def _proxy_setup(self):
+        """Function _proxy_setup
 
         Attributes:
-            proxy       -- proxy ip, by default loopback interface
-            proxy_port  -- number of proxy port
+            None    ---
         """
 
         tor_instance = self.proxy_rotator.get_tor_instance()
+        # More reliable way of counting this
         tor_instance.add_connection_use_count()
 
         # Setup tor curl options
-        tor_proxy_port = tor_instance.proxy_port
+        tor_proxy_port = tor_instance.socks_port
         tor_proxy_ip = tor_instance.proxy_ip
 
         self.handler.setopt(pycurl.PROXY, tor_proxy_ip)
@@ -57,15 +59,15 @@ class TorPyCurl():
         self.handler.setopt(pycurl.PROXYTYPE, pycurl.PROXYTYPE_SOCKS5_HOSTNAME)
 
     def _curl_setup(self,url, headers={}, attrs={}, ssl=True, timeout=15):
-        """Function
+        """Function _curl_setup
 
         Attributes:
-            url     --
-            headers --
-            attrs   --
-            ssl     --
-            timeout --
-            user_agent  --
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
+            user_agent  -- user agent for the request
         """
 
         if attrs:
@@ -81,9 +83,14 @@ class TorPyCurl():
         self.handler.setopt(pycurl.USERAGENT, self.user_agent.random)
 
     def _curl_perform(self):
-        """Function
+        """Function _curl_perform
 
         Attributes:
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
         """
 
         response_buffer = StringIO()
@@ -101,14 +108,14 @@ class TorPyCurl():
 
 
     def get(self, url='https://check.torproject.org/', headers={}, attrs={}, ssl=True, timeout=15):
-        """Function
+        """Function get
 
         Attributes:
-            url     --
-            headers --
-            attrs   --
-            ssl     --
-            timeout --
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
         """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
@@ -129,14 +136,14 @@ class TorPyCurl():
             print 'An error occurred: ', errstr
 
     def post(self, url=None, headers={}, attrs={},  ssl=True, timeout=15):
-        """Function
+        """Function post
 
         Attributes:
-            url     --
-            headers --
-            attrs   --
-            ssl     --
-            timeout --
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
         """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
@@ -159,14 +166,14 @@ class TorPyCurl():
             print 'An error occurred: ', errstr
 
     def put(self, url, headers={}, attrs={}, ssl=True, timeout=15):
-        """Function
+        """Function put
 
         Attributes:
-            url     --
-            headers --
-            attrs   --
-            ssl     --
-            timeout --
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
         """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
@@ -192,14 +199,14 @@ class TorPyCurl():
             print 'An error ocurred: ', errstr
 
     def delete(self, url, headers={}, attrs={}, ssl=True, timeout=15):
-        """Function
+        """Function delete
 
         Attributes:
-            url     --
-            headers --
-            attrs   --
-            ssl     --
-            timeout --
+            url     -- uri of the petition
+            headers -- headers of the the request
+            attrs   -- attrs of the request
+            ssl     -- ssl encryption parameter for the request, by default it's set to 15s
+            timeout -- timeout parameter for the request, by default it's set to True
         """
 
         # Reset of the Curl instance, to ensure that the new exitRelay works properly
@@ -219,14 +226,17 @@ class TorPyCurl():
             errno, errstr = error
             print 'An error ocurred: ', errstr
 
-    def validate(self, url='https://check.torproject.org/', ssl=True, timeout=15):
-        """Function
+    def validate(self):
+        """Function validate
 
         Attributes:
-            url     --
-            ssl     --
-            timeout --
+            None    ---
         """
+
+        url = 'https://check.torproject.org/'
+        ssl = True
+        timeout = 15
+
         try:
             response = self.get(url=url, ssl=ssl, timeout=timeout)
             soup = BeautifulSoup(response.data, 'html.parser')
@@ -247,16 +257,18 @@ class TorPyCurl():
 
 
 
-    def _dns_leak_test(self, url='https://www.perfect-privacy.com/check-ip/', ssl=True, timeout=15):
+    def _dns_leak_test(self):
         #POST y 2 coockies hacen falta al menos. usar tamper data
 
-        """Function
+        """Function dns_leak_test
 
         Attributes:
-            url     --
-            ssl     --
-            timeout --
+            None    ---
         """
+
+        url = 'https://www.perfect-privacy.com/check-ip/'
+        ssl = True
+        timeout = 15
 
         try:
             response = self.get(url=url, ssl=ssl, timeout=timeout)

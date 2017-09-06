@@ -24,22 +24,26 @@ class TorInstance():
         Attributes:
         """
 
-    def __init__(self, tor_instance_id, nickname, proxy_port, cntrl_port, exit_policy, circuit_hops):
+    def __init__(self, tor_instance_id, nickname, socks_port, cntrl_port, exit_policy, circuit_hops):
         self.tor_instance_id = tor_instance_id
-        self.proxy_ip = LOCAL_HOST
-        self.cntrl_port = cntrl_port
-        self.proxy_port = proxy_port
         self.nickname = nickname
-        self.exit_policy =  exit_policy # controller.set_conf("ExitNodes", "{" + country + "}")
-        self.circuit_hops = circuit_hops
-        self.country_list = 'ALL'
-        self.circuit_dirtyness = time.time()
-        self.ctrl = Controller.from_port(port=cntrl_port)
-        self.ctrl.authenticate(password='dummypass')
+        self.cntrl_port = cntrl_port
+        self.socks_port = socks_port
+        self.proxy_ip = LOCAL_HOST # DEFAULT 127.0.0.1 Loopback
 
+        # Advanced Parameters
+        self.exit_policy =  exit_policy # controller.set_conf("ExitNodes", "{" + country + "}")
+        self.country_list = 'ALL'
+        self.circuit_hops = circuit_hops
         if circuit_hops is None:
             self.circuit_hops = DEFAULT_CIRCUIT_HOPS
 
+        # Stem Cntrl
+        self.ctrl = Controller.from_port(port=cntrl_port)
+        self.ctrl.authenticate(password='dummypass')
+
+        # Circuit dirtyness 10min by default
+        self.circuit_dirtyness = time.time()
 
         # Aditional Configuration. Even tho the circuits resets every 10min, we are gonna force a higher refresh if it's
         # needed or upon reaching the max number of connections per circuit that it's stablished by the attr connection_reset_threshold
@@ -47,14 +51,13 @@ class TorInstance():
         self.time_out_reset_threshold = DEFAULT_TIME_OUT_RESET_THRESHOLD
         self.connection_reset_threshold = DEFAULT_RESET_THRESHOLD
         self.connection_count = 0
-        return
 
 
     def __str__(self):
         timer = time.time()
         return('TorInstance ID: %s\n Nickname: %s\n ProxyPort: %s, CntrlPort: %s\n Circuit Dirt: %s, Circuit Hops: %s\n ExitPolicy: {%s}\n'
                ' Country List: %s' % (
-                   self.tor_instance_id, self.nickname, self.proxy_port, self.cntrl_port, timer - self.circuit_dirtyness, self.circuit_hops, self.exit_policy,
+                   self.tor_instance_id, self.nickname, self.socks_port, self.cntrl_port, timer - self.circuit_dirtyness, self.circuit_hops, self.exit_policy,
                    self.country_list
         ))
 

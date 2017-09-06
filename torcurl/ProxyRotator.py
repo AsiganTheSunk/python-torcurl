@@ -3,7 +3,7 @@
 import random
 
 import stem
-# import sys
+import sys
 from TorInstance import TorInstance
 
 DEFAULT_ID = 0
@@ -11,6 +11,7 @@ DEFAULT_PROXY_PORT = 9050
 DEFAULT_CNTRL_PORT = 9051
 DEFAULT_INSTANCE_NICK_NAMES = ['Moctezuma','Catherine','Ghandi', 'Ragnar', 'Tokugawa', 'Sitting Bull', 'Joao II']
 DEFAULT_CONNECTION_USE_LIMIT = 30
+DEFAULT_PROXY_MODE = 'random'
 
 
 class ProxyRotator():
@@ -22,13 +23,14 @@ class ProxyRotator():
         #  threading.Thread.__init__(self)
         self.tor_instance_list = []
         self.tor_last_connected = -1
-        self.proxy_connection_mode = 'random'
+
+        # Read from configuration file in the future
         self.tor_connection_limit = DEFAULT_CONNECTION_USE_LIMIT
         self.tor_instance_list.append(TorInstance(DEFAULT_ID, DEFAULT_INSTANCE_NICK_NAMES[0] ,
                                                   DEFAULT_PROXY_PORT, DEFAULT_CNTRL_PORT, None, None))
 
         self.tor_instance_counter = len(self.tor_instance_list) - 1
-        return
+        self.proxy_connection_mode = DEFAULT_PROXY_MODE
 
     def __str__(self):
         result = '\nProxyRotator Instance\n Number of Instances: %s, Connection Mode: %s\n' %\
@@ -40,16 +42,21 @@ class ProxyRotator():
     def run(self):
         return
 
-
-    def add_tor_instance(self, nickname, proxy_port, cntrl_port, exit_policy, circuit_hops):
+    def add_tor_instance(self, nickname, socks_port, cntrl_port, exit_policy, circuit_hops):
         """
         Function
 
         Attributes:
+            - nickname: nickname of the Tor instance you have created, just an easter egg for now
+            - socks_port: socks5 connection port
+            - cntrl_port: cntrl connection port to manage tor over stem library
+            - exit_policy: allow, deny policy
+            - circuit_hops: number of hops in the tor circuit (future!!)
+
         """
         if nickname is None:
             nickname = DEFAULT_INSTANCE_NICK_NAMES[self.tor_instance_counter + 1]
-            self.tor_instance_list.append(TorInstance(self._new_tor_instance_id(), nickname, proxy_port, cntrl_port,
+            self.tor_instance_list.append(TorInstance(self._new_tor_instance_id(), nickname, socks_port, cntrl_port,
                                                       exit_policy, circuit_hops))
 
 
@@ -109,7 +116,7 @@ class ProxyRotator():
             Attributes:
             """
         if tor_instance.connection_count >= tor_instance.connection_reset_threshold:
-            print '[ %s ]: %s - %s TOR Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.proxy_port, tor_instance.cntrl_port)
+            print '[ %s ]: %s - %s TOR Circuit should reset shortly...' % (tor_instance.nickname, tor_instance.socks_port, tor_instance.cntrl_port)
             tor_instance.reset()
             return False
         return True
